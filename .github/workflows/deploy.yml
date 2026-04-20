@@ -10,6 +10,9 @@ on:
       - '.github/workflows/**'
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 # ── Permissions: what GitHub token is allowed to do ────────────────────
 permissions:
   contents: read
