@@ -1,0 +1,90 @@
+<main class="page">
+  <section class="hero">
+    <p class="eyebrow">Angular Demo</p>
+    <h1>{{ title }}</h1>
+    <p class="intro">
+      Plan a simple 3-day lineup, add new sets, and filter by festival day.
+    </p>
+  </section>
+
+  <section class="panel form-panel">
+    <h2>Add A Set</h2>
+    <div class="form-grid">
+      <label>
+        Artist
+        <input #artistInput type="text" placeholder="Band or artist name" />
+      </label>
+
+      <label>
+        Stage
+        <select #stageInput>
+          @for (stage of stages; track stage) {
+            <option [value]="stage">{{ stage }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Day
+        <select #dayInput>
+          @for (day of days; track day) {
+            <option [value]="day">{{ day }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Time
+        <input #timeInput type="time" />
+      </label>
+    </div>
+
+    <button
+      type="button"
+      class="btn"
+      (click)="addSet(artistInput, stageInput, dayInput, timeInput)"
+    >
+      Add To Lineup
+    </button>
+  </section>
+
+  <section class="panel lineup-panel">
+    <div class="lineup-header">
+      <h2>Festival Lineup</h2>
+      <div class="filters" aria-label="Filter by day">
+        <button
+          type="button"
+          [class.active]="selectedDay() === 'All'"
+          (click)="setDayFilter('All')"
+        >
+          All
+        </button>
+        @for (day of days; track day) {
+          <button
+            type="button"
+            [class.active]="selectedDay() === day"
+            (click)="setDayFilter(day)"
+          >
+            {{ day }}
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (filteredLineup().length === 0) {
+      <p class="empty">No sets yet for this day.</p>
+    } @else {
+      <ul class="lineup-list">
+        @for (set of filteredLineup(); track set.id) {
+          <li>
+            <div>
+              <p class="artist">{{ set.artist }}</p>
+              <p class="meta">{{ set.day }} | {{ set.time }} | {{ set.stage }}</p>
+            </div>
+            <button type="button" class="remove" (click)="removeSet(set.id)">Remove</button>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</main>
